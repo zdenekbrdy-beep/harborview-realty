@@ -2,22 +2,33 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/server";
 
+const toNumOrNull = (v: unknown) =>
+  v === null || v === undefined || v === "" ? null : Number(v);
+
+const toEmailOrNull = (v: unknown) =>
+  typeof v !== "string" || v === "" || v === "none" || v === "N/A" ? null : v;
+
 const schema = z.object({
   lead_id: z.string().uuid().optional(),
   name: z.string().min(1),
   phone: z.string().min(7),
-  email: z.string().email().optional().nullable(),
-  budget_min: z.number().int().positive().optional().nullable(),
-  budget_max: z.number().int().positive().optional().nullable(),
-  bedrooms: z.number().int().positive().optional().nullable(),
-  timeline: z.enum(["asap", "1-3-months", "3-6-months", "just-looking"]).optional().nullable(),
-  pre_approved: z.boolean().optional().nullable(),
+  email: z.preprocess(toEmailOrNull, z.string().email().optional().nullable()),
+  budget_min: z.preprocess(toNumOrNull, z.number().optional().nullable()),
+  budget_max: z.preprocess(toNumOrNull, z.number().optional().nullable()),
+  bedrooms: z.preprocess(toNumOrNull, z.number().optional().nullable()),
+  timeline: z
+    .enum(["asap", "1-3-months", "3-6-months", "just-looking"])
+    .optional()
+    .nullable(),
+  pre_approved: z.preprocess(
+    (v) => (v === null || v === undefined ? null : Boolean(v)),
+    z.boolean().optional().nullable()
+  ),
   location_preference: z.string().optional().nullable(),
   notes: z.string().optional().nullable(),
 });
 
 export async function POST(req: NextRequest) {
-
   const body = await req.json();
   const parsed = schema.safeParse(body);
   if (!parsed.success) {
