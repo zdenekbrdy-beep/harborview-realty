@@ -13,7 +13,7 @@ const testimonials = [
   },
   {
     quote:
-      "I was skeptical about AI for something this big. But it was faster and less awkward than any intake call I&apos;ve had with a human agent.",
+      "I was skeptical about AI for something this big. But it was faster and less awkward than any intake call I've had with a human agent.",
     name: "Carlos M.",
     location: "Repeat buyer, Newburyport MA",
   },

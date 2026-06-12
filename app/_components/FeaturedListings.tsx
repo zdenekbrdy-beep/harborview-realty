@@ -20,7 +20,7 @@ const listings: Listing[] = [
     beds: 4,
     baths: 2.5,
     sqft: 2340,
-    imageUrl: "https://picsum.photos/seed/colonial-nh-1/800/450",
+    imageUrl: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&q=70",
   },
   {
     id: "l2",
@@ -30,7 +30,7 @@ const listings: Listing[] = [
     beds: 3,
     baths: 2,
     sqft: 1820,
-    imageUrl: "https://picsum.photos/seed/ranch-house-2/800/450",
+    imageUrl: "https://images.unsplash.com/photo-1572120360610-d971b9d7767c?w=800&q=70",
   },
   {
     id: "l3",
@@ -40,7 +40,7 @@ const listings: Listing[] = [
     beds: 5,
     baths: 3,
     sqft: 3100,
-    imageUrl: "https://picsum.photos/seed/colonial-new-england-3/800/450",
+    imageUrl: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=70",
   },
   {
     id: "l4",
@@ -50,7 +50,7 @@ const listings: Listing[] = [
     beds: 3,
     baths: 2,
     sqft: 1960,
-    imageUrl: "https://picsum.photos/seed/craftsman-house-4/800/450",
+    imageUrl: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=70",
   },
   {
     id: "l5",
@@ -60,7 +60,7 @@ const listings: Listing[] = [
     beds: 6,
     baths: 4,
     sqft: 4200,
-    imageUrl: "https://picsum.photos/seed/farmhouse-estate-5/800/450",
+    imageUrl: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=70",
   },
   {
     id: "l6",
@@ -70,7 +70,7 @@ const listings: Listing[] = [
     beds: 4,
     baths: 3,
     sqft: 2650,
-    imageUrl: "https://picsum.photos/seed/coastal-cape-6/800/450",
+    imageUrl: "https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?w=800&q=70",
   },
 ];
 
