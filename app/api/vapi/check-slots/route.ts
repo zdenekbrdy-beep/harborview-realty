@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
 
 function verifySecret(req: NextRequest): boolean {
-  return req.headers.get("x-vapi-secret") === process.env.VAPI_WEBHOOK_SECRET;
+  const fromHeader = req.headers.get("x-vapi-secret");
+  const fromQuery = req.nextUrl.searchParams.get("secret");
+  const expected = process.env.VAPI_WEBHOOK_SECRET;
+  return fromHeader === expected || fromQuery === expected;
 }
 
 function toFriendlyLabel(slotAt: string): string {
