@@ -16,15 +16,7 @@ const schema = z.object({
   notes: z.string().optional().nullable(),
 });
 
-function verifySecret(req: NextRequest): boolean {
-  const secret = req.headers.get("x-vapi-secret");
-  return secret === process.env.VAPI_WEBHOOK_SECRET;
-}
-
 export async function POST(req: NextRequest) {
-  if (!verifySecret(req)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
 
   const body = await req.json();
   const parsed = schema.safeParse(body);

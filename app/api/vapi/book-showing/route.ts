@@ -9,10 +9,6 @@ const schema = z.object({
   property_address: z.string().optional().nullable(),
 });
 
-function verifySecret(req: NextRequest): boolean {
-  return req.headers.get("x-vapi-secret") === process.env.VAPI_WEBHOOK_SECRET;
-}
-
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleString("en-US", {
     weekday: "long",
@@ -26,10 +22,6 @@ function formatDate(iso: string): string {
 }
 
 export async function POST(req: NextRequest) {
-  if (!verifySecret(req)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   const body = await req.json();
   const parsed = schema.safeParse(body);
   if (!parsed.success) {

@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
 
-function verifySecret(req: NextRequest): boolean {
-  return req.headers.get("x-vapi-secret") === process.env.VAPI_WEBHOOK_SECRET;
-}
-
 function toFriendlyLabel(slotAt: string): string {
   const date = new Date(slotAt);
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -17,10 +13,6 @@ function toFriendlyLabel(slotAt: string): string {
 }
 
 export async function POST(req: NextRequest) {
-  if (!verifySecret(req)) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   const body = await req.json().catch(() => ({}));
   const limit = Math.min(Number(body?.limit) || 3, 5);
 
