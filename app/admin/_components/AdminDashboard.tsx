@@ -55,7 +55,17 @@ export default function AdminDashboard({
   const [leads, setLeads] = useState<Lead[]>(initialLeads);
   const [showings, setShowings] = useState<Showing[]>(initialShowings);
   const [tab, setTab] = useState<"leads" | "showings">("leads");
+  const [cancelling, setCancelling] = useState<string | null>(null);
   const supabase = createClient();
+
+  async function cancelShowing(showing: Showing) {
+    if (!confirm(`Cancel showing for ${showing.leads?.name ?? "this lead"}?`)) return;
+    setCancelling(showing.id);
+    await supabase.from("showings").update({ status: "cancelled" }).eq("id", showing.id);
+    await supabase.from("showing_slots").update({ is_booked: false }).eq("slot_at", showing.slot_at);
+    setShowings((prev) => prev.map((s) => s.id === showing.id ? { ...s, status: "cancelled" } : s));
+    setCancelling(null);
+  }
 
   useEffect(() => {
     const leadsChannel = supabase
@@ -203,7 +213,8 @@ export default function AdminDashboard({
                     <th className="pb-3 pr-6 font-medium">When</th>
                     <th className="pb-3 pr-6 font-medium">Property</th>
                     <th className="pb-3 pr-6 font-medium">Agent</th>
-                    <th className="pb-3 font-medium">Status</th>
+                    <th className="pb-3 pr-6 font-medium">Status</th>
+                    <th className="pb-3 font-medium">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -221,7 +232,7 @@ export default function AdminDashboard({
                       <td className="py-3 pr-6 text-mist">{formatDate(s.slot_at)}</td>
                       <td className="py-3 pr-6 text-mist">{s.property_address ?? "TBD"}</td>
                       <td className="py-3 pr-6 text-mist">{s.agent_name ?? "-"}</td>
-                      <td className="py-3">
+                      <td className="py-3 pr-6">
                         <span
                           className={`text-xs rounded-full px-2 py-0.5 ${
                             s.status === "booked"
@@ -233,6 +244,17 @@ export default function AdminDashboard({
                         >
                           {s.status}
                         </span>
+                      </td>
+                      <td className="py-3">
+                        {s.status === "booked" && (
+                          <button
+                            onClick={() => cancelShowing(s)}
+                            disabled={cancelling === s.id}
+                            className="text-xs text-red-600 hover:text-red-800 hover:underline disabled:opacity-40 transition-colors"
+                          >
+                            {cancelling === s.id ? "Cancelling..." : "Cancel"}
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}
